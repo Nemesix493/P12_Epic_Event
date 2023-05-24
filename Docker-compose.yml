@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  epic_event_postgresql:
+    build:
+      context: ./postgresql_db/
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_USER=epic_event_app
+      - POSTGRES_PASSWORD=S2gQaB38JcTWmVpTyw*yBKs74ytMrfu7Hhx7!JRATwSuGA3943SNd67CJiE#C5k^7zJqi#
+      - POSTGRES_DB=epic_event_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./postgresql_db/postgresql_data/
+
