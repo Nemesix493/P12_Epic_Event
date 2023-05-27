@@ -9,7 +9,7 @@ services:
       - POSTGRES_PASSWORD=S2gQaB38JcTWmVpTyw*yBKs74ytMrfu7Hhx7!JRATwSuGA3943SNd67CJiE#C5k^7zJqi#
       - POSTGRES_DB=epic_event_db
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 volumes:
