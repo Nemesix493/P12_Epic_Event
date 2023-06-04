@@ -24,6 +24,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_APP_NAME=${POSTGRES_APP_NAME}
       - SECRET_KEY=${SECRET_KEY}
+      - TEST_ARG=${TEST_ARG}
     build:
       context: ./epic_event/
       dockerfile: Dockerfile
