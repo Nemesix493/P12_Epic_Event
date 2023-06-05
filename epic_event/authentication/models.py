@@ -1,4 +1,5 @@
 import itertools
+from typing import Any
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -12,14 +13,18 @@ class StaffMember(AbstractUser):
 
     def add_default_groups(self):
         for group_name in self.default_groups_name:
-            self.groups.add(
-                Group.objects.get(name=f'{group_name.capitalize()} Group')
-            )
+            group = Group.objects.get(name=f'{group_name.capitalize()} Group')
+            if group not in self.groups.all():
+                self.groups.add(
+                    Group.objects.get(name=f'{group_name.capitalize()} Group')
+                )
     
     def save(self, *args, **kwargs):
         if not self.pk:
+            super(StaffMember, self).save(*args, **kwargs)
             self.add_default_groups()
-        super().save(*args, **kwargs)
+        else:
+            super(StaffMember, self).save(*args, **kwargs)
 
     @property
     def children(self):
