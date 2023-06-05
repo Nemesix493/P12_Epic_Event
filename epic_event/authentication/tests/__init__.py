@@ -1,0 +1,1 @@
+from .obtaintokenpair import TestTokenObtainPairView
