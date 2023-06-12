@@ -29,8 +29,11 @@ class StaffMember(AbstractUser):
     @property
     def children(self):
         children = [self.__getattribute__(subclass.__name__.lower()) for subclass in self.__class__.__subclasses__() if hasattr(self, subclass.__name__.lower())]
-        if len(children) != 1:
+        if len(children) == 0:
+            raise AttributeError('Should have 1 children')
+        elif len(children) != 1:
             raise TypeError(f'Should have 1 children not ({len(children)})!')
+        
         return children[0]
     
     @classmethod
