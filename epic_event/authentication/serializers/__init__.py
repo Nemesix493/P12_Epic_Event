@@ -5,8 +5,15 @@ from .managemember import DetailsManageMemberSerializer, WriteManageMemberSerial
 from ..models import ManageMember, SaleMember, SupportMember
 
 
-DetailsStaffMemberSerializer.serializer_type = [
+DetailsStaffMemberSerializer.details_serializer_type = [
     (ManageMember, DetailsManageMemberSerializer),
     (SupportMember, DetailsSupportMemberSerializer),
     (SaleMember, DetailsSaleMemberSerializer)
 ]
+
+WRITE_SERIALIZER_CLASS = [
+    (ManageMember, WriteManageMemberSerializer),
+    (SupportMember, WriteSupportMemberSerializer),
+    (SaleMember, WriteSaleMemberSerializer)
+]
+

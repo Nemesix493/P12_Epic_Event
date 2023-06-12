@@ -1,9 +1,15 @@
-from .staffmember import BaseStaffMemberSerializer
+from rest_framework.serializers import ModelSerializer
+
 from ..models import ManageMember
 
-class BaseManageMemberSerializer(BaseStaffMemberSerializer):
-    class Meta(BaseStaffMemberSerializer.Meta):
+class BaseManageMemberSerializer(ModelSerializer):
+    class Meta:
         model = ManageMember
+        fields = [
+            'username',
+            'first_name',
+            'last_name'
+        ]
 
 
 class WriteManageMemberSerializer(BaseManageMemberSerializer):
@@ -11,6 +17,7 @@ class WriteManageMemberSerializer(BaseManageMemberSerializer):
         fields = [
             *BaseManageMemberSerializer.Meta.fields,
             'email',
+            'password'
         ]
 
 

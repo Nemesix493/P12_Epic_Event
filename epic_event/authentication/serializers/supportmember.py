@@ -1,9 +1,15 @@
-from .staffmember import BaseStaffMemberSerializer
+from rest_framework.serializers import ModelSerializer
+
 from ..models import SupportMember
 
-class BaseSupportMemberSerializer(BaseStaffMemberSerializer):
-    class Meta(BaseStaffMemberSerializer.Meta):
+class BaseSupportMemberSerializer(ModelSerializer):
+    class Meta:
         model = SupportMember
+        fields = [
+            'username',
+            'first_name',
+            'last_name'
+        ]
 
 
 class WriteSupportMemberSerializer(BaseSupportMemberSerializer):
@@ -11,6 +17,7 @@ class WriteSupportMemberSerializer(BaseSupportMemberSerializer):
         fields = [
             *BaseSupportMemberSerializer.Meta.fields,
             'email',
+            'password'
         ]
 
 
