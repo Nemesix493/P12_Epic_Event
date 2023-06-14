@@ -57,14 +57,20 @@ class StaffMember(AbstractUser):
 
 class SaleMember(StaffMember):
     default_groups_name = ['Sale']
+    class Meta:
+        verbose_name = 'Membres de l\'équipe de vente'
 
 
 class SupportMember(StaffMember):
     default_groups_name = ['Support']
+    class Meta:
+        verbose_name = 'Membres de l\'équipe de support'
 
 
 class ManageMember(StaffMember):
     default_groups_name = ['Manage']
+    class Meta:
+        verbose_name = 'Membres de l\'équipe de gestion'
 
 
 StaffMember.link_subclasses()
