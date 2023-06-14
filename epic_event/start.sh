@@ -1,4 +1,5 @@
-sleep 5
+sleep 4
+python -m manage makemigrations
 python -m manage migrate
 python -m manage init_groups
 if [ $TEST_ARG == 1 ]; then
