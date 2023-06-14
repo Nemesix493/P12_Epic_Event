@@ -1,7 +1,7 @@
 FROM python:3.10
 WORKDIR /app
-COPY . /app/
-RUN pip install -r requirements.txt
+COPY ./requirements.txt /requirements/
+RUN pip install -r ../requirements/requirements.txt
 #ENV PYTHONUNBUFFERED=1
 #ENV PYTHONDONTWRITEBYTECODE=1
 #RUN pip install gunicorn

@@ -30,6 +30,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    volumes:
+      - epic_event_app_files:/app/
     networks:
       - my_network
 
@@ -40,6 +42,12 @@ volumes:
       type: none
       o: bind
       device: ./postgresql_db/postgresql_data/
+  epic_event_app_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./epic_event/
 
 networks:
   my_network:
