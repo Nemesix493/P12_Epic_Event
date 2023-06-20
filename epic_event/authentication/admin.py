@@ -30,6 +30,17 @@ class StaffMemberAdmin(admin.ModelAdmin):
             return []
         else:
             return self.exclude
+    
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.set_password(form.data.get('password'))
+        return super().save_model(request, obj, form, change)
+    
+    def has_view_permission(self, request: HttpRequest, obj: Any | None = ...) -> bool:
+        return super().has_view_permission(request, obj)
+    
+    def has_change_permission(self, request: HttpRequest, obj: Any | None = ...) -> bool:
+        return super().has_change_permission(request, obj) or request.user.children == obj
 
 @admin.register(SaleMember)
 class SaleMemberAdmin(StaffMemberAdmin):
