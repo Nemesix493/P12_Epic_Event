@@ -2,24 +2,13 @@ from rest_framework.test import APITestCase
 from django.urls import reverse_lazy
 
 from ..models import StaffMember, ManageMember, SaleMember, SupportMember
-from .utils import get_user_test, NeedToken
+from .utils import UserTokenMixin, DataBaseInitMixin
 
-class TestUserViewset(APITestCase, NeedToken):
+class TestUserViewset(APITestCase, UserTokenMixin, DataBaseInitMixin):
 
     def setUp(self) -> None:
-        StaffMember.init_default_groups()
+        self.init_db()
         return super().setUp()
-
-    def do_as_response(self, do, as_class, args=[], kwargs={}) -> list:
-        user_data = {
-            'username': 'user_test',
-            'password': 'password'
-        }
-        user_object = get_user_test(as_class, **user_data)
-        user_tokens = self.get_user_token(**user_data)['access']
-        result = do(token=user_tokens, *args, **kwargs)
-        user_object.delete()
-        return result
     
     def create_user(self, token: str|None = None, user_data: bool = True) -> list:
         status_codes = []
