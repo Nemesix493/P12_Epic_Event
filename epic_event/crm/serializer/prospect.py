@@ -6,6 +6,7 @@ class BaseProspectSerializer(ModelSerializer):
     class Meta:
         model = Prospect
         fields = [
+            'id',
             'first_name',
             'last_name',
             'email',
