@@ -55,7 +55,7 @@ class TestProspectViewset(TestViewsets):
         #retriev a prospect as salemember should success
         prospect_test = Prospect.objects.create(**self.prospect_exemple_data)
         response = self.do_as_response(
-            self.retriev,
+            self.retrieve,
             SaleMember,
             kwargs={
                 'pk': prospect_test.pk
@@ -63,12 +63,12 @@ class TestProspectViewset(TestViewsets):
         )
         self.assertEqual(200, response.status_code, f'{response.json()}')
     
-    def test_retriev_error(self):
+    def test_retrieve_error(self):
         #retriev a prospect as supportmember or managemember should result 403
         prospect_test = Prospect.objects.create(**self.prospect_exemple_data)
         for member_type in [ManageMember, SupportMember]:
             response = self.do_as_response(
-                self.retriev,
+                self.retrieve,
                 member_type,
                 kwargs={
                     'pk': prospect_test.pk
@@ -76,7 +76,7 @@ class TestProspectViewset(TestViewsets):
             )
             self.assertEqual(403, response.status_code)
         #retriev a prospect without loged in should result 403
-        response = self.retriev(pk=prospect_test.pk)
+        response = self.retrieve(pk=prospect_test.pk)
         self.assertEqual(403, response.status_code, 'Unloged !!')
     
     def test_create_success(self):
@@ -85,7 +85,7 @@ class TestProspectViewset(TestViewsets):
             self.create,
             SaleMember,
             kwargs={
-                'prospect_data': self.prospect_exemple_data
+                'object_data': self.prospect_exemple_data
             }
         )
         self.assertEqual(201, response.status_code, str(response.json()))
@@ -97,12 +97,12 @@ class TestProspectViewset(TestViewsets):
                 self.create,
                 member_type,
                 kwargs={
-                    'prospect_data': self.prospect_exemple_data
+                    'object_data': self.prospect_exemple_data
                 }
             )
             self.assertEqual(403, response.status_code)
         #create a prospect without loged in should result 403
-        response = self.create(prospect_data=self.prospect_exemple_data)
+        response = self.create(object_data=self.prospect_exemple_data)
         self.assertEqual(403, response.status_code)
     
     def test_update_success(self):
@@ -113,7 +113,7 @@ class TestProspectViewset(TestViewsets):
             SaleMember,
             kwargs={
                 'pk':prospect_test.pk,
-                'prospect_data': {
+                'object_data': {
                     key: val
                     if key != 'first_name' else f'new_{val}'
                     for key, val in self.prospect_exemple_data.items()
@@ -131,7 +131,7 @@ class TestProspectViewset(TestViewsets):
                 member_type,
                 kwargs={
                     'pk':prospect_test.pk,
-                    'prospect_data': {
+                    'object_data': {
                         key: val
                         if key != 'first_name' else f'new_{val}'
                         for key, val in self.prospect_exemple_data.items()
@@ -140,22 +140,22 @@ class TestProspectViewset(TestViewsets):
             )
             self.assertEqual(403, response.status_code)
         #update a prospect without loged in should result 403
-        response = self.update(pk=prospect_test.pk, prospect_data=self.prospect_exemple_data)
+        response = self.update(pk=prospect_test.pk, object_data=self.prospect_exemple_data)
         self.assertEqual(403, response.status_code, 'Unloged !!')
 
-    def test_delete_error(self):
+    def test_destroy_error(self):
         #no one can delete a prospect
         prospect_test = Prospect.objects.create(**self.prospect_exemple_data)
         for member_type in [SaleMember, ManageMember, SupportMember]:
             response = self.do_as_response(
-                self.delete,
+                self.destroy,
                 member_type,
                 kwargs={
                     'pk':prospect_test.pk,
                 }
             )
             self.assertEqual(403, response.status_code)
-        response = self.delete(pk=prospect_test.pk)
+        response = self.destroy(pk=prospect_test.pk)
         self.assertEqual(403, response.status_code)
 
     def test_to_client_success(self):

@@ -21,31 +21,31 @@ class TestViewsets(TestCase, UserTokenMixin, DataBaseInitMixin, ABC):
             )
         return response
 
-    def retriev(self, token: str|None = None, pk=None):
+    def retrieve(self, token: str|None = None, pk=None):
         response = self.client.get(
                 path=self.get_link(link_type='detail', kwargs={'pk': pk,}),
                 HTTP_AUTHORIZATION=f'Bearer {token}' if token is not None else None
             )
         return response
 
-    def create(self, token: str|None = None, prospect_data: dict| None = None):
+    def create(self, token: str|None = None, object_data: dict| None = None):
         response = self.client.post(
                 path=self.get_link(link_type='list'),
-                data= prospect_data if prospect_data else {},
+                data= object_data if object_data else {},
                 HTTP_AUTHORIZATION=f'Bearer {token}' if token is not None else None
             )
         return response
 
-    def update(self, token: str|None = None, pk=None, prospect_data: dict| None = None):
+    def update(self, token: str|None = None, pk=None, object_data: dict| None = None):
         response = self.client.put(
                 path=self.get_link(link_type='detail', kwargs={'pk': pk,}),
-                data= prospect_data if prospect_data else {},
+                data= object_data if object_data else {},
                 HTTP_AUTHORIZATION=f'Bearer {token}' if token is not None else None,
                 content_type='application/json'
             )
         return response
 
-    def delete(self, token: str|None = None, pk=None):
+    def destroy(self, token: str|None = None, pk=None):
         response = self.client.delete(
                 path=self.get_link(link_type='detail', kwargs={'pk': pk,}),
                 HTTP_AUTHORIZATION=f'Bearer {token}' if token is not None else None
