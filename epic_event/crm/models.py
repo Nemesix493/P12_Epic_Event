@@ -11,7 +11,7 @@ class Company(models.Model):
     email = models.EmailField(verbose_name='Email', unique=True)
     phone = PhoneNumberField(verbose_name='Telephone fix')
     mobile = PhoneNumberField(verbose_name='Telephone portable', blank=True)
-    company_name = models.CharField(max_length=250)
+    company_name = models.CharField(verbose_name='Non d\'entreprise', max_length=250)
     date_created = models.DateTimeField(verbose_name='Date de création', auto_now_add=True)
     date_updated = models.DateTimeField(verbose_name='Dernière mise à jour', auto_now=True)
 
@@ -37,6 +37,10 @@ class Client(Company):
         related_name='Clients',
         on_delete=models.CASCADE
     )
+    
+    def __str__(self) -> str:
+        return f'{self.last_name} {self.first_name}:{self.company_name}'
+    
     class Meta:
         verbose_name = 'Client'
 
@@ -87,6 +91,12 @@ class Contract(models.Model):
     @property
     def sale_contact(self):
         return self.client.sale_contact
+    
+    @property
+    def client_company_name(self):
+        return self.client.company_name
+    
+    client_company_name.fget.short_description = 'Nom d\'entreprise du contrat'
     
     class Meta:
         verbose_name = 'Contrat'
