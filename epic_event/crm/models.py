@@ -59,4 +59,37 @@ class Prospect(Company):
     class Meta:
         verbose_name = 'Prospect'
 
+
+class Contract(models.Model):
+    client = models.ForeignKey(
+        to=Client,
+        related_name='contracts',
+        on_delete=models.CASCADE,
+        verbose_name='Client',
+        blank=False
+    )
+    status = models.BooleanField(
+        verbose_name='statut',
+        default=False
+    )
+    amount = models.FloatField(
+        verbose_name='Montant'
+    )
+    payment_due = models.DateTimeField(
+        verbose_name='Date de paiement'
+    )
+    date_created = models.DateTimeField(
+        auto_now_add=True
+    )
+    date_updated = models.DateTimeField(
+        auto_now=True
+    )
+    @property
+    def sale_contact(self):
+        return self.client.sale_contact
+    
+    class Meta:
+        verbose_name = 'Contrat'
+
+
 Company.link_subclasses()
