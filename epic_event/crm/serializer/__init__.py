@@ -1,2 +1,3 @@
 from .prospect import WriteProspectSerializer, ListProspectSerializer, DetailProspectSerializer
 from .client import WriteClientSerializer, ListClientSerializer, DetailClientSerializer
+from .contract import WriteContractSerializer, ListContractSerializer, DetailContractSerializer
