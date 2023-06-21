@@ -1,5 +1,6 @@
 import datetime
 
+import pytz
 from django.urls import reverse_lazy
 
 from authentication.models import SaleMember, SupportMember, ManageMember, StaffMember
@@ -20,7 +21,7 @@ class TestContractViewset(TestViewsets):
     contract_exemple_data = {
         'status': False,
         'amount': 1000,
-        'payment_due': datetime.datetime.now() + datetime.timedelta(days=5)
+        'payment_due': datetime.datetime.now(tz=pytz.UTC) + datetime.timedelta(days=5)
     }
 
     def setUp(self) -> None:
@@ -94,7 +95,7 @@ class TestContractViewset(TestViewsets):
                 }
             }
         )
-        self.assertEqual(200, response.status_code)
+        self.assertEqual(201, response.status_code)
     
     def test_create_error(self):
         #try to create a contract as managemember or supportmember should result 403
@@ -123,7 +124,7 @@ class TestContractViewset(TestViewsets):
         #update a contract as salemember should success
         test_contract = self.get_test_contract()
         response = self.do_as_response(
-            self.create,
+            self.update,
             SaleMember,
             kwargs={
                 'pk': test_contract.pk,
@@ -144,7 +145,7 @@ class TestContractViewset(TestViewsets):
         #try to update a contract as managemember or supportmember should result 403
         for member_type in [ManageMember, SupportMember]:
             response = self.do_as_response(
-                self.create,
+                self.update,
                 member_type,
                 kwargs={
                     'pk': test_contract.pk,
