@@ -2,7 +2,7 @@ from typing import Any
 from django.contrib import admin
 
 # Register your models here.
-from .models import Prospect, Client
+from .models import Prospect, Client, Contract
 from authentication.models import SaleMember
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -20,7 +20,6 @@ class ProspectAdmin(CompanyAdmin):
             prospect.to_client()
 
 
-
 @admin.register(Client)
 class ClientAdmin(CompanyAdmin):
     readonly_fields = ['sale_contact']
@@ -29,3 +28,9 @@ class ClientAdmin(CompanyAdmin):
         if not change:
             obj.sale_contact = request.user.children
         return super().save_model(request, obj, form, change)
+
+
+@admin.register(Contract)
+class ContractAdmin(admin.ModelAdmin):
+    list_display = ['client_company_name', 'amount', 'status', 'payment_due']
+    readonly_fields = ['date_created', 'date_updated']
