@@ -1,0 +1,18 @@
+{% extends "admin/change_list.html" %}
+{% load crm_extras %}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    {% if  request.user|has_set_support_permission %}
+    <li>
+        <a href="{% url 'admin:set_support' %}" class="set_support">
+            Affecter à un évenement un membre du support
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'admin:change_support' %}" class="change_support">
+            Changer le membre du support d'un évenement
+        </a>
+    </li>
+    {% endif %}
+{% endblock %}
