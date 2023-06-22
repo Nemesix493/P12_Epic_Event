@@ -1,7 +1,8 @@
 from typing import Any, Optional
 from django.contrib import admin
 from django.http.request import HttpRequest
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import Permission
 
 # Register your models here.
 from .models import Prospect, Client, Contract, Event
@@ -70,6 +71,9 @@ class EventAdmin(admin.ModelAdmin):
         )
 
     def support_view(self, request, events, supportmembers, action):
+        permission_natural_key = Permission.objects.get(codename=f'set_support_event').natural_key()
+        if not request.user.has_perm(f'{permission_natural_key[1]}.{permission_natural_key[0]}'):
+            return redirect('admin:crm_event_changelist')
         if request.method == 'POST':
             form = SetSupportForm(
                 events,
