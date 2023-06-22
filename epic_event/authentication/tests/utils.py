@@ -47,6 +47,8 @@ class DataBaseInitMixin(ABC):
         from authentication.management.commands.init_groups import init_groups
         from crm.management.commands.init_company_permission import init_company_permission
         from crm.management.commands.init_contract_permission import init_contract_permission
+        from crm.management.commands.init_event_permission import init_event_permission
         init_groups()
         init_company_permission()
         init_contract_permission()
+        init_event_permission()
