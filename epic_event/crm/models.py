@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 from phonenumber_field.modelfields import PhoneNumberField
-from authentication.models import SaleMember
+from authentication.models import SaleMember, SupportMember
 
 class Company(models.Model):
     first_name = models.CharField(verbose_name='Prenom', max_length=25)
@@ -101,5 +101,52 @@ class Contract(models.Model):
     class Meta:
         verbose_name = 'Contrat'
 
+
+class Event(models.Model):
+    support_contact = models.ForeignKey(
+        to=SupportMember,
+        related_name='events',
+        on_delete=models.CASCADE,
+        verbose_name='Support',
+        blank=True
+    )
+    event_status = models.OneToOneField(
+        to=Contract,
+        related_name='event',
+        on_delete=models.CASCADE,
+        verbose_name='Contrat',
+        blank=False
+    )
+    date_created = models.DateTimeField(
+        verbose_name='Date de creation',
+        auto_now_add=True
+    )
+    date_updated = models.DateTimeField(
+        verbose_name='Date de mise à jour',
+        auto_now=True
+    )
+    event_date = models.DateTimeField(
+        verbose_name='Date de l\'évenement'
+    )
+    notes = models.TextField(
+        verbose_name='Notes'
+    )
+    attendees = models.IntegerField(
+        verbose_name='Participants(es)'
+    )
+
+    @property
+    def client(self):
+        return self.event_status.client
+    
+    @property
+    def sale_contact(self):
+        return self.event_status.sale_contact
+
+    client.fget.short_description = 'Nom d\'entreprise de l\'évenement'
+    sale_contact.fget.short_description = 'Conseiller(ère) du contrat'
+
+    class Meta:
+        verbose_name = 'Évenement'
 
 Company.link_subclasses()
