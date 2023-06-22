@@ -9,7 +9,7 @@ def init_event_permission():
     for user_group in [sale_group, support_group, manage_group]:
         if current_permission not in user_group.permissions.all():
             user_group.permissions.add(current_permission)
-    current_permission = Permission.objects.get(codename='add_contract')
+    current_permission = Permission.objects.get(codename='add_event')
     if current_permission not in sale_group.permissions.all():
         sale_group.permissions.add(current_permission)
 

@@ -108,7 +108,8 @@ class Event(models.Model):
         related_name='events',
         on_delete=models.CASCADE,
         verbose_name='Support',
-        blank=True
+        blank=True,
+        null=True
     )
     event_status = models.OneToOneField(
         to=Contract,
