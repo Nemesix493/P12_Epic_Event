@@ -12,6 +12,9 @@ def init_event_permission():
     current_permission = Permission.objects.get(codename='add_event')
     if current_permission not in sale_group.permissions.all():
         sale_group.permissions.add(current_permission)
+    current_permission = Permission.objects.get(codename='set_support_event')
+    if current_permission not in manage_group.permissions.all():
+        manage_group.permissions.add(current_permission)
 
 class Command(BaseCommand):
 

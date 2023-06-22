@@ -97,6 +97,9 @@ class Contract(models.Model):
         return self.client.company_name
     
     client_company_name.fget.short_description = 'Nom d\'entreprise du contrat'
+
+    def __str__(self):
+        return f'{self.client_company_name} le {self.date_created}'
     
     class Meta:
         verbose_name = 'Contrat'
@@ -143,11 +146,19 @@ class Event(models.Model):
     @property
     def sale_contact(self):
         return self.event_status.sale_contact
-
+    
+    @property
+    def client_company_name(self):
+        return self.client.company_name
+    
+    client_company_name.fget.short_description = 'Nom d\'entreprise du contrat'
     client.fget.short_description = 'Nom d\'entreprise de l\'évenement'
     sale_contact.fget.short_description = 'Conseiller(ère) du contrat'
 
     class Meta:
         verbose_name = 'Évenement'
+        permissions = [
+            ("set_support_event", "Can (set/change) support contact"),
+        ]
 
 Company.link_subclasses()
