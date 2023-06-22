@@ -11,7 +11,7 @@ class CustomBasePermission(BasePermission):
             permission_natural_key = Permission.objects.get(codename=f'view_{self.model.__name__.lower()}').natural_key()
             if not request.user.has_perm(f'{permission_natural_key[1]}.{permission_natural_key[0]}'):
                 raise AccessDenied(f'You don\'t have view permission for {self.model.__name__} !')
-        elif view.action == 'update' or 'partial_update':
+        elif view.action == 'update' or view.action == 'partial_update':
             permission_natural_key = Permission.objects.get(codename=f'change_{self.model.__name__.lower()}').natural_key()
             if not request.user.has_perm(f'{permission_natural_key[1]}.{permission_natural_key[0]}'):
                 raise AccessDenied(f'You don\'t have change permission for {self.model.__name__} !')
@@ -31,5 +31,5 @@ class CustomBasePermission(BasePermission):
         elif view.action == 'create':
             permission_natural_key = Permission.objects.get(codename=f'add_{self.model.__name__.lower()}').natural_key()
             if not request.user.has_perm(f'{permission_natural_key[1]}.{permission_natural_key[0]}'):
-                raise AccessDenied(f'You don\'t have add permission for {self.model.__name__} !')
+                raise AccessDenied(f'You don\'t have add permission for {self.model.__name__} ! {request.user.get_all_permissions()}')
         return True
