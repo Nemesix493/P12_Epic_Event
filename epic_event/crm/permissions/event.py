@@ -17,5 +17,5 @@ class EventPermission(CustomBasePermission):
                 if request.user.has_perm(f'{permission_natural_key[1]}.{permission_natural_key[0]}'):
                     return True
                 else:
-                    raise AccessDenied('You don\'t have set support permission !')
+                    raise AccessDenied('You don\'t have set support permission !', request=request)
         return super().has_object_permission(request, view, obj)

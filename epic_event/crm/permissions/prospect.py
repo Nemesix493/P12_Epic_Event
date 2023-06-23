@@ -12,5 +12,5 @@ class ProspectPermission(CustomBasePermission):
         if view.action == 'to_client':
             permission_natural_key = Permission.objects.get(codename=f'change_{self.model.__name__.lower()}').natural_key()
             if not request.user.has_perm(f'{permission_natural_key[1]}.{permission_natural_key[0]}'):
-                raise AccessDenied(f'You don\'t have change permission for {self.model.__name__} !')
+                raise AccessDenied(f'You don\'t have change permission for {self.model.__name__} !', request=request)
         return True

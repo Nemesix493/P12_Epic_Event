@@ -8,14 +8,14 @@ from ..exceptions import AccessDenied
 class UserPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         if not request.user.is_authenticated:
-            raise AccessDenied('You must be authenticated !', 'not_authenticated')
+            raise AccessDenied('You must be authenticated !', 'not_authenticated', request)
         if not isinstance(request.user.children, ManageMember):
-            raise AccessDenied('You must be a manage member !')
+            raise AccessDenied('You must be a manage member !', request=request)
         return True
     
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
-            raise AccessDenied('You must be authenticated !', 'not_authenticated')
+            raise AccessDenied('You must be authenticated !', 'not_authenticated', request)
         if not isinstance(request.user.children, ManageMember):
-            raise AccessDenied('You must be a manage member !')
+            raise AccessDenied('You must be a manage member !', request=request)
         return True

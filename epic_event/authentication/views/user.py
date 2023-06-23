@@ -22,19 +22,19 @@ class UserViewset(ModelViewSet):
             for model_class, serializer_class in WRITE_SERIALIZER_CLASS:
                 if self.kwargs.get('member_type') == model_class.__name__.lower():
                     return serializer_class
-            raise BadRequest('member_type not valid !')
+            raise BadRequest('member_type not valid !', request=self.request)
         elif self.request.method != 'GET':
             for model_class, serializer_class in WRITE_SERIALIZER_CLASS:
                 if isinstance(self.get_object().children, model_class):
                     return serializer_class
-            raise BadRequest('member_type not valid !')
+            raise BadRequest('member_type not valid !', request=self.request)
         raise APIException('Internal error !')
 
     def get_object(self):
         try:
             obj = StaffMember.objects.get(pk=self.kwargs.get('pk'))
         except StaffMember.DoesNotExist:
-            raise NotFound('Member not found !')
+            raise NotFound('Member not found !', request=self.request)
         self.check_object_permissions(self.request, obj)
         return obj
 
@@ -46,7 +46,7 @@ class UserViewset(ModelViewSet):
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(data=request.data)
         if not serializer.is_valid():
-            raise BadRequest(str(serializer.error_messages))
+            raise BadRequest(str(serializer.error_messages), request=self.request)
         user = serializer.save()
         return Response(DetailsStaffMemberSerializer(instance=user).data)
     
