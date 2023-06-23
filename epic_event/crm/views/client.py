@@ -10,6 +10,8 @@ from ..permissions import ClientPermission
 
 class ClientViewset(ModelViewSet):
     permission_classes = [ClientPermission]
+    queryset = Client.objects.all()
+    filterset_fields = ListClientSerializer.Meta.fields
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -18,9 +20,6 @@ class ClientViewset(ModelViewSet):
             return ListClientSerializer
         elif self.action == 'create' or self.action == 'update':
             return WriteClientSerializer
-    
-    def get_queryset(self):
-        return Client.objects.all()
     
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer_class()(data=request.data)

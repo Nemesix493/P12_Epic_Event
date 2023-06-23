@@ -10,6 +10,8 @@ from ..permissions import ProspectPermission
 
 class ProspectViewset(ModelViewSet):
     permission_classes = [ProspectPermission]
+    queryset = Prospect.objects.all()
+    filterset_fields = ListProspectSerializer.Meta.fields
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -18,9 +20,6 @@ class ProspectViewset(ModelViewSet):
             return ListProspectSerializer
         elif self.action == 'create' or self.action == 'update':
             return WriteProspectSerializer
-    
-    def get_queryset(self):
-        return Prospect.objects.all()
     
     def destroy(self, request, *args, **kwargs):
         return Response(

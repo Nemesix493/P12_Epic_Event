@@ -11,6 +11,7 @@ from ..permissions import EventPermission
 class EventViewset(ModelViewSet):
     permission_classes = [EventPermission]
     queryset = Event.objects.all()
+    filterset_fields = ListEventSerializer.Meta.fields
 
     def get_support(self):
         support_pk = self.request.data.get('support_contact', None)

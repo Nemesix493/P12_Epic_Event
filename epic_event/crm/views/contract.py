@@ -7,6 +7,8 @@ from ..permissions import ContractPermission
 
 class ContractViewset(ModelViewSet):
     permission_classes = [ContractPermission]
+    queryset = Contract.objects.all()
+    filterset_fields = ListContractSerializer.Meta.fields
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -15,9 +17,6 @@ class ContractViewset(ModelViewSet):
             return ListContractSerializer
         elif self.action == 'create' or self.action == 'update':
             return WriteContractSerializer
-    
-    def get_queryset(self):
-        return Contract.objects.all()
     
     def destroy(self, request, *args, **kwargs):
         return Response(
