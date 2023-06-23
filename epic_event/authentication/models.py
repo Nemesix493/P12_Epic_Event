@@ -15,9 +15,7 @@ class StaffMember(AbstractUser):
         for group_name in self.default_groups_name:
             group = Group.objects.get(name=f'{group_name.capitalize()} Group')
             if group not in self.groups.all():
-                self.groups.add(
-                    Group.objects.get(name=f'{group_name.capitalize()} Group')
-                )
+                self.groups.add(group)
     
     def save(self, *args, **kwargs):
         if not self.pk:
