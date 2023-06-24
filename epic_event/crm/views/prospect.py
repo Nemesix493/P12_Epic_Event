@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from authentication.exceptions import AccessDenied
 from authentication.models import SaleMember
 from ..models import Prospect
-from ..serializer import DetailProspectSerializer, ListProspectSerializer, WriteProspectSerializer
+from ..serializer import DetailProspectSerializer, ListProspectSerializer, WriteProspectSerializer, ListClientSerializer
 from ..permissions import ProspectPermission
 
 class ProspectViewset(ModelViewSet):
@@ -36,9 +36,9 @@ class ProspectViewset(ModelViewSet):
     @action(detail=True, methods=['POST'], url_path='to-client', url_name='to-client')
     def to_client(self, request, *args, **kwargs):
         if isinstance(request.user.children, SaleMember):
-            self.get_object().to_client(request.user.children)
+            client = self.get_object().to_client(request.user.children)
             return Response(
-                {'success': 'Success !'},
+                ListClientSerializer(client).data,
                 200
             )
         return Response(
