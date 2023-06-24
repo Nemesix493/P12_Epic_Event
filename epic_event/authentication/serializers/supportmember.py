@@ -13,6 +13,13 @@ class BaseSupportMemberSerializer(ModelSerializer):
 
 
 class WriteSupportMemberSerializer(BaseSupportMemberSerializer):
+
+    def save(self, **kwargs):
+        user = super().save(**kwargs)
+        user.set_password(self._validated_data.get('password'))
+        user.save()
+        return user
+    
     class Meta(BaseSupportMemberSerializer.Meta):
         fields = [
             *BaseSupportMemberSerializer.Meta.fields,

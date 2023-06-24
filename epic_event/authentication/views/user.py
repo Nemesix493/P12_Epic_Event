@@ -50,6 +50,19 @@ class UserViewset(ModelViewSet):
         user = serializer.save()
         return Response(DetailsStaffMemberSerializer(instance=user).data)
     
+    def update(self, request, *args, **kwargs):
+        response = super().update(request, *args, **kwargs)
+        if response.status_code//100 == 2:
+            return Response(
+                { 
+                    key: val
+                    for key,val in response.data.items()
+                    if key != 'password'
+                },
+                response.status_code
+            )
+        return response
+    
     def create(self, request, *args, **kwargs):
         return Response(
             {'error': 'To create a user you must use create endpoint with '},
