@@ -1,0 +1,15 @@
+# CircleCI configuration file
+
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: docker:stable
+    steps:
+      - checkout
+
+      # Build Docker image and tag with commit hash
+      - run:
+          name: Build Docker image
+          command: |
+            docker-compose --env-file ./.env.tests up --build --exit-code-from epic_event_app

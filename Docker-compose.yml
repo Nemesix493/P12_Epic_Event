@@ -1,0 +1,54 @@
+version: "3.9"
+services:
+  epic_event_postgresql:
+    build:
+      context: ./postgresql_db/
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+  epic_event_app:
+    depends_on:
+      - epic_event_postgresql
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_APP_NAME=${POSTGRES_APP_NAME}
+      - SECRET_KEY=${SECRET_KEY}
+      - TEST_ARG=${TEST_ARG}
+    build:
+      context: ./epic_event/
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - epic_event_app_files:/app/
+    networks:
+      - my_network
+
+volumes:
+  pgdata:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./postgresql_db/postgresql_data/
+  epic_event_app_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./epic_event/
+
+networks:
+  my_network:
+    driver: bridge
